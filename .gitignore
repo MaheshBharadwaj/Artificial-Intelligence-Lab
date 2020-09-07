@@ -1,0 +1,5 @@
+#Ignore zip
+*.zip
+
+#Ignore Report
+Report.pdf
