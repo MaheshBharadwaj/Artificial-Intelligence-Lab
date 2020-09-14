@@ -3,3 +3,8 @@
 
 #Ignore Report
 Report.pdf
+
+
+#Ignore jupyter
+.ipynb_checkpoints/
+*.ipynb

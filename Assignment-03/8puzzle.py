@@ -5,9 +5,6 @@ from enum import Enum
 from os import system
 
 class heuristic(Enum):
-    """
-    Each different heuristic method as a unq integer
-    """
     NONE = 0
     BEST_FIRST = 1
     A_STAR = 2 
@@ -17,9 +14,6 @@ class heuristic(Enum):
 actual_position = [(),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
 
 class state(object):
-    """
-    Class representing states in the problem's state space
-    """
     def __init__(self,parent=None, state=None, depth=None, a_p=None, h=heuristic.NONE):
         self.parent = parent
         self.state = state
@@ -49,14 +43,6 @@ class state(object):
         return count
 
     def generate_states(self):
-        """
-        Function which generates successor states of current state
-        By applying the four permitted operations:
-        1. Move space up
-        2. Move space down
-        3. Move space left
-        4. Move space right
-        """
 
         sequence = self.state
         space_i = -1
@@ -82,9 +68,6 @@ class state(object):
 
 
     def is_goal(self):
-        """
-        Goal test for current state
-        """
         count = 0
         sequence = self.state
         for i in range(3):
@@ -102,32 +85,18 @@ class state(object):
         return '\nState:\n' + str(self.state) + '\nDepth: ' + str(self.depth)
 
     def __lt__(self,other):
-        """
-        Overrides < operator for the custom class we have defined
-        """
         return self.heuristic_fn() < other.heuristic_fn()
     
     def __gt__(self,other):
-        """
-        Overrides > operator for the custom class we have defined
-        """
         return self.heuristic_fn() > other.heuristic_fn()
     
     def __eq__(self,other):
-        """
-        Checking if two states are equal by traversing all elements
-        """
-        for i in range(3):
             for j in range(3):
                 if self.state[i][j] != other.state[i][j]:
                     return False
         return True
 
     def __hash__(self):
-        """
-        Generate unique key for state
-        Required for set() to test uniqueness
-        """
         return hash(self.state.tostring())
 
 
@@ -135,46 +104,22 @@ class state(object):
 
 
 def print_path(s):
-    """
-    Recursive function to print path to any state 's'
-    from start state.
-    """
-
     # Base case: when parent is None, it is the start state.
     if s.parent is None:
         print(str(s))
         return
     
-    # Print path to this state 
     print_path(s.parent)
-
-    # Print current state
     print(str(s))
 
 def solve_dfs(init_state, actual_position):
-    """
-    Depth first search through state space to find solution
-    
-    ARGUMENTS:
-    ----------
-    init_state:
-        inital sequence representing start state
-    actual_position:
-        Maps number to its i, j location in goal state
-    """
-
     # Creating initial state from input sequence
     start_state = state(parent=None, state=init_state, depth=1, a_p=actual_position)
 
-
-    # Discovered bag
     discovered = [start_state]
-    
-    #Explored set
     explored = set()
 
     while len(discovered):
-        # Pop top of stack
         current_state = discovered.pop(0)
 
         if current_state.is_goal():
@@ -187,25 +132,10 @@ def solve_dfs(init_state, actual_position):
             if successor_state in explored:
                 continue
             
-            # Push state to top of stack
             discovered.append(successor_state)
 
 
 def solve_informed(init_state, actual_position,h):
-    """
-    Informed search across state space for the solution
-
-    ARGUMENTS:
-     ----------
-    init_state:
-        inital sequence representing start state
-    actual_position:
-        Maps number to its i, j location in goal state
-    h: heuristic
-        Represents the mode to use ie A* or Greedy best first
-    """
-
-
     start_state = state(None, init_state, 1, actual_position,h)
 
     discovered = [start_state]
