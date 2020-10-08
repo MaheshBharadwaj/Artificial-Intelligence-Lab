@@ -7,5 +7,4 @@ Report.pdf
 
 #Ignore jupyter
 .ipynb_checkpoints/
-*.ipynb
 __pycache__
