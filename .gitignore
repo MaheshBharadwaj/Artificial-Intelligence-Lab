@@ -8,3 +8,7 @@ Report.pdf
 #Ignore jupyter
 .ipynb_checkpoints/
 __pycache__
+
+*.pkl
+
+*.png
